@@ -1,0 +1,29 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "chatpi",
+      "image": "670564539270.dkr.ecr.us-east-1.amazonaws.com/chatpi:latest",
+      "essential": true,
+      "memory": 128,
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "4000"
+        }
+      ]
+    },
+    {
+      "name": "touchbase-core",
+      "image": "670564539270.dkr.ecr.us-east-1.amazonaws.com/touchbase-core:latest",
+      "essential": true,
+      "memory": 128,
+      "environment": [
+        {
+          "name": "PORT",
+          "value": "8080"
+        }
+      ]
+    }
+  ]
+}
