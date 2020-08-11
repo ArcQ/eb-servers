@@ -11,6 +11,12 @@
           "name": "PORT",
           "value": "4000"
         }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 4000,
+          "containerPort": 4000
+        }
       ]
     },
     {
@@ -22,6 +28,12 @@
         {
           "name": "PORT",
           "value": "8080"
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
         }
       ]
     }
