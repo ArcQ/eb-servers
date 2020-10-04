@@ -1,0 +1,216 @@
+chatpi:
+  environment:
+    AWS_ACCESS_KEY_ID: '''TODO'''
+    AWS_REGION: '''TODO'''
+    AWS_S3_BUCKET: '''TODO'''
+    AWS_SECRET_ACCESS_KEY: '''TODO'''
+    DB_HOST: '''kfdb1.cihodsllm9ip.us-east-1.rds.amazonaws.com'''
+    DB_NAME: '''chatpi_dev'''
+    DB_PASS: '''xadgeV-wisvaz-caztu0'''
+    DB_USER: '''postgres'''
+    GIPHY_API_TOKEN: '''TODO'''
+    NEO4J_ENCRYPTION_LEVEL: REQUIRED
+    NEO4J_HOST: hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787
+    NEO4J_PW: b.385AsmztLHwC.t5esAqIpN5nBIAbz
+    NEO4J_USER: app170044708-cH7jK9
+    PORT: '8080'
+    SECRET_KEY_BASE: CX4dSSrhYm6nad3vjp5ve4AN494wnJtfhLg2mW+xLvAX8ER/2HD/3zuAdjaB3/UC
+    ? '\
+
+      AWS_ACCESS_KEY_ID'
+    : '''TODO'''
+    ? '\
+
+      AWS_REGION'
+    : '''TODO'''
+    ? '\
+
+      AWS_S3_BUCKET'
+    : '''TODO'''
+    ? '\
+
+      AWS_SECRET_ACCESS_KEY'
+    : '''TODO'''
+    ? '\
+
+      DB_NAME'
+    : '''chatpi_dev'''
+    ? '\
+
+      DB_PASS'
+    : '''xadgeV-wisvaz-caztu0'''
+    ? '\
+
+      DB_USER'
+    : '''postgres'''
+    ? '\
+
+      GIPHY_API_TOKEN'
+    : '''TODO'''
+    ? '\
+
+      NEO4J_ENCRYPTION_LEVEL'
+    : REQUIRED
+    ? '\
+
+      NEO4J_HOST'
+    : hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787
+    ? '\
+
+      NEO4J_PW'
+    : b.385AsmztLHwC.t5esAqIpN5nBIAbz
+    ? '\
+
+      NEO4J_USER'
+    : app170044708-cH7jK9
+    ? '\
+
+      SECRET_KEY_BASE'
+    : CX4dSSrhYm6nad3vjp5ve4AN494wnJtfhLg2mW+xLvAX8ER/2HD/3zuAdjaB3/UC
+  image: 670564539270.dkr.ecr.us-east-1.amazonaws.com/chatpi:latest
+nginxproxy:
+  environment:
+    AWS_ACCESS_KEY_ID: '''TODO'''
+    AWS_REGION: '''TODO'''
+    AWS_S3_BUCKET: '''TODO'''
+    AWS_SECRET_ACCESS_KEY: '''TODO'''
+    DB_HOST: '''kfdb1.cihodsllm9ip.us-east-1.rds.amazonaws.com'''
+    DB_NAME: '''chatpi_dev'''
+    DB_PASS: '''xadgeV-wisvaz-caztu0'''
+    DB_USER: '''postgres'''
+    GIPHY_API_TOKEN: '''TODO'''
+    NEO4J_ENCRYPTION_LEVEL: REQUIRED
+    NEO4J_HOST: hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787
+    NEO4J_PW: b.385AsmztLHwC.t5esAqIpN5nBIAbz
+    NEO4J_USER: app170044708-cH7jK9
+    SECRET_KEY_BASE: CX4dSSrhYm6nad3vjp5ve4AN494wnJtfhLg2mW+xLvAX8ER/2HD/3zuAdjaB3/UC
+    ? '\
+
+      AWS_ACCESS_KEY_ID'
+    : '''TODO'''
+    ? '\
+
+      AWS_REGION'
+    : '''TODO'''
+    ? '\
+
+      AWS_S3_BUCKET'
+    : '''TODO'''
+    ? '\
+
+      AWS_SECRET_ACCESS_KEY'
+    : '''TODO'''
+    ? '\
+
+      DB_NAME'
+    : '''chatpi_dev'''
+    ? '\
+
+      DB_PASS'
+    : '''xadgeV-wisvaz-caztu0'''
+    ? '\
+
+      DB_USER'
+    : '''postgres'''
+    ? '\
+
+      GIPHY_API_TOKEN'
+    : '''TODO'''
+    ? '\
+
+      NEO4J_ENCRYPTION_LEVEL'
+    : REQUIRED
+    ? '\
+
+      NEO4J_HOST'
+    : hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787
+    ? '\
+
+      NEO4J_PW'
+    : b.385AsmztLHwC.t5esAqIpN5nBIAbz
+    ? '\
+
+      NEO4J_USER'
+    : app170044708-cH7jK9
+    ? '\
+
+      SECRET_KEY_BASE'
+    : CX4dSSrhYm6nad3vjp5ve4AN494wnJtfhLg2mW+xLvAX8ER/2HD/3zuAdjaB3/UC
+  image: nginx
+  links:
+  - chatpi:chatpi
+  - touchbasecore:touchbase-core
+  ports:
+  - 80:80
+  volumes:
+  - /Users/eddielaw/Development/personal/eb-server/proxy/conf.d:/etc/nginx/conf.d:ro
+touchbasecore:
+  environment:
+    AWS_ACCESS_KEY_ID: '''TODO'''
+    AWS_REGION: '''TODO'''
+    AWS_S3_BUCKET: '''TODO'''
+    AWS_SECRET_ACCESS_KEY: '''TODO'''
+    DB_HOST: '''kfdb1.cihodsllm9ip.us-east-1.rds.amazonaws.com'''
+    DB_NAME: '''chatpi_dev'''
+    DB_PASS: '''xadgeV-wisvaz-caztu0'''
+    DB_USER: '''postgres'''
+    GIPHY_API_TOKEN: '''TODO'''
+    NEO4J_ENCRYPTION_LEVEL: REQUIRED
+    NEO4J_HOST: hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787
+    NEO4J_PW: b.385AsmztLHwC.t5esAqIpN5nBIAbz
+    NEO4J_USER: app170044708-cH7jK9
+    PORT: '8080'
+    SECRET_KEY_BASE: CX4dSSrhYm6nad3vjp5ve4AN494wnJtfhLg2mW+xLvAX8ER/2HD/3zuAdjaB3/UC
+    ? '\
+
+      AWS_ACCESS_KEY_ID'
+    : '''TODO'''
+    ? '\
+
+      AWS_REGION'
+    : '''TODO'''
+    ? '\
+
+      AWS_S3_BUCKET'
+    : '''TODO'''
+    ? '\
+
+      AWS_SECRET_ACCESS_KEY'
+    : '''TODO'''
+    ? '\
+
+      DB_NAME'
+    : '''chatpi_dev'''
+    ? '\
+
+      DB_PASS'
+    : '''xadgeV-wisvaz-caztu0'''
+    ? '\
+
+      DB_USER'
+    : '''postgres'''
+    ? '\
+
+      GIPHY_API_TOKEN'
+    : '''TODO'''
+    ? '\
+
+      NEO4J_ENCRYPTION_LEVEL'
+    : REQUIRED
+    ? '\
+
+      NEO4J_HOST'
+    : hobby-ajoclflhhkojgbkenbjiacel.dbs.graphenedb.com:24787
+    ? '\
+
+      NEO4J_PW'
+    : b.385AsmztLHwC.t5esAqIpN5nBIAbz
+    ? '\
+
+      NEO4J_USER'
+    : app170044708-cH7jK9
+    ? '\
+
+      SECRET_KEY_BASE'
+    : CX4dSSrhYm6nad3vjp5ve4AN494wnJtfhLg2mW+xLvAX8ER/2HD/3zuAdjaB3/UC
+  image: 670564539270.dkr.ecr.us-east-1.amazonaws.com/touchbase-core:latest
