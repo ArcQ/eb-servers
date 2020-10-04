@@ -1,0 +1,254 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "TouchbaseTopic that publishes to two sqs queues, one for touchbase server and one for chatpi",
+  "Parameters": {
+    "TouchbaseEventsUserPassword": {
+      "NoEcho": "true",
+      "Type": "String",
+      "Description": "Password for the IAM user TouchbaseEventsUser",
+      "MinLength": "1",
+      "MaxLength": "41",
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "ConstraintDescription": "must contain only alphanumeric characters."
+    }
+  },
+
+  "Resources": {
+    "TouchbaseSNSTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "Subscription": [{
+            "Endpoint": {
+              "Fn::GetAtt": ["TouchbaseQueue", "Arn"]
+            },
+            "Protocol": "sqs"
+          },
+          {
+            "Endpoint": {
+              "Fn::GetAtt": ["ChatpiQueue", "Arn"]
+            },
+            "Protocol": "sqs"
+          }
+        ]
+      }
+    },
+    "TouchbaseQueue": {
+      "Type": "AWS::SQS::Queue"
+    },
+    "ChatpiQueue": {
+      "Type": "AWS::SQS::Queue"
+    },
+    "TouchbaseEventsUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "LoginProfile": {
+          "Password": {
+            "Ref": "TouchbaseEventsUserPassword"
+          }
+        }
+      }
+    },
+    "TouchbaseEventsUserKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "Properties": {
+        "UserName": {
+          "Ref": "TouchbaseEventsUser"
+        }
+      }
+    },
+    "TouchbasePublishTopicGroup": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {
+        "Policies": [{
+          "PolicyName": "TouchbaseTopicGroupPolicy",
+          "PolicyDocument": {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "sns:Publish"
+              ],
+              "Resource": {
+                "Ref": "TouchbaseSNSTopic"
+              }
+            }]
+          }
+        }]
+      }
+    },
+    "AddUserToTouchbasePublishTopicGroup": {
+      "Type": "AWS::IAM::UserToGroupAddition",
+      "Properties": {
+        "GroupName": {
+          "Ref": "TouchbasePublishTopicGroup"
+        },
+        "Users": [{
+          "Ref": "TouchbaseEventsUser"
+        }]
+      }
+    },
+    "TouchbaseEventsUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "LoginProfile": {
+          "Password": {
+            "Ref": "TouchbaseEventsUserPassword"
+          }
+        }
+      }
+    },
+    "TouchbaseEventsUserKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "Properties": {
+        "UserName": {
+          "Ref": "TouchbaseEventsUser"
+        }
+      }
+    },
+    "TouchbaseRDMessageQueueGroup": {
+      "Type": "AWS::IAM::Group",
+      "Properties": {
+        "Policies": [{
+          "PolicyName": "TouchbaseQueueGroupPolicy",
+          "PolicyDocument": {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "sqs:DeleteMessage",
+                "sqs:ReceiveMessage"
+              ],
+              "Resource": [{
+                  "Fn::GetAtt": ["TouchbaseQueue", "Arn"]
+                },
+                {
+                  "Fn::GetAtt": ["ChatpiQueue", "Arn"]
+                }
+              ]
+            }]
+          }
+        }]
+      }
+    },
+    "AddUserToTouchbaseQueueGroup": {
+      "Type": "AWS::IAM::UserToGroupAddition",
+      "Properties": {
+        "GroupName": {
+          "Ref": "TouchbaseRDMessageQueueGroup"
+        },
+        "Users": [{
+          "Ref": "TouchbaseEventsUser"
+        }]
+      }
+    },
+    "TouchbaseQueuePolicy": {
+      "Type": "AWS::SQS::QueuePolicy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {
+              "Service": "sns.amazonaws.com"
+            },
+            "Action": ["sqs:SendMessage"],
+            "Resource": "*",
+            "Condition": {
+              "ArnEquals": {
+                "aws:SourceArn": {
+                  "Ref": "TouchbaseSNSTopic"
+                }
+              }
+            }
+          }]
+        },
+        "Queues": [{
+          "Ref": "TouchbaseQueue"
+        }, {
+          "Ref": "ChatpiQueue"
+        }]
+      }
+    }
+  },
+  "Outputs": {
+    "TouchbaseSNSTopicTopicARN": {
+      "Value": {
+        "Ref": "TouchbaseSNSTopic"
+      }
+    },
+    "TouchbaseQueueInfo": {
+      "Value": {
+        "Fn::Join": [
+          " ",
+          [
+            "ARN:",
+            {
+              "Fn::GetAtt": ["TouchbaseQueue", "Arn"]
+            },
+            "URL:",
+            {
+              "Ref": "TouchbaseQueue"
+            }
+          ]
+        ]
+      }
+    },
+    "ChatpiQueueInfo": {
+      "Value": {
+        "Fn::Join": [
+          " ",
+          [
+            "ARN:",
+            {
+              "Fn::GetAtt": ["ChatpiQueue", "Arn"]
+            },
+            "URL:",
+            {
+              "Ref": "ChatpiQueue"
+            }
+          ]
+        ]
+      }
+    },
+    "TouchbaseEventsUserInfo": {
+      "Value": {
+        "Fn::Join": [
+          " ",
+          [
+            "ARN:",
+            {
+              "Fn::GetAtt": ["TouchbaseEventsUser", "Arn"]
+            },
+            "Access Key:",
+            {
+              "Ref": "TouchbaseEventsUserKey"
+            },
+            "Secret Key:",
+            {
+              "Fn::GetAtt": ["TouchbaseEventsUserKey", "SecretAccessKey"]
+            }
+          ]
+        ]
+      }
+    },
+    "TouchbaseEventsUserInfo": {
+      "Value": {
+        "Fn::Join": [
+          " ",
+          [
+            "ARN:",
+            {
+              "Fn::GetAtt": ["TouchbaseEventsUser", "Arn"]
+            },
+            "Access Key:",
+            {
+              "Ref": "TouchbaseEventsUserKey"
+            },
+            "Secret Key:",
+            {
+              "Fn::GetAtt": ["TouchbaseEventsUserKey", "SecretAccessKey"]
+            }
+          ]
+        ]
+      }
+    }
+  }
+}
